@@ -37,7 +37,7 @@
    "in_filter": 0, 
    "in_list_view": 1, 
    "label": "Status", 
-   "no_copy": 1, 
+   "no_copy": 0, 
    "options": "Open\nWorking\nPending Review\nClosed\nCancelled", 
    "permlevel": 0, 
    "precision": "", 
@@ -51,7 +51,7 @@
   {
    "fieldname": "edit_task", 
    "fieldtype": "Button", 
-   "label": "View Task", 
+   "label": "Edit Task", 
    "permlevel": 0, 
    "precision": ""
   }, 
@@ -143,7 +143,7 @@
  "is_submittable": 0, 
  "issingle": 0, 
  "istable": 1, 
- "modified": "2015-04-13 04:56:18.766659", 
+ "modified": "2015-02-23 01:55:18.865117", 
  "modified_by": "Administrator", 
  "module": "Projects", 
  "name": "Project Task", 

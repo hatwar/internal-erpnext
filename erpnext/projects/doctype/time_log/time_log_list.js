@@ -3,7 +3,7 @@
 
 // render
 frappe.listview_settings['Time Log'] = {
-	add_fields: ["status", "billable", "activity_type", "task", "project", "hours", "for_manufacturing", "billing_amount"],
+	add_fields: ["status", "billable", "activity_type", "task", "project", "hours", "for_manufacturing"],
 	selectable: true,
 	onload: function(me) {
 		me.page.add_menu_item(__("Make Time Log Batch"), function() {
@@ -37,7 +37,7 @@ frappe.listview_settings['Time Log'] = {
 					$.extend(detail, {
 						"time_log": d.name,
 						"activity_type": d.activity_type,
-						"billing_amount": d.billing_amount,
+						"created_by": d.owner,
 						"hours": d.hours
 					});
 				})

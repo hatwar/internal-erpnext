@@ -32,11 +32,6 @@ def get_data():
 					"name": "Activity Type",
 					"description": _("Types of activities for Time Sheets"),
 				},
-				{
-					"type": "doctype",
-					"name": "Activity Cost",
-					"description": _("Cost of various activities"),
-				},
 			]
 		},
 		{

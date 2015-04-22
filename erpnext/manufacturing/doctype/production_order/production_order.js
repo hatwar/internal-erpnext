@@ -69,12 +69,14 @@ erpnext.production_order = {
 					cur_frm.cscript['Update Finished Goods'], frappe.boot.doctype_icons["Stock Entry"]);
 			}
 
-			frm.add_custom_button(__("Show Stock Entries"), function() {
-				frappe.route_options = {
-					production_order: frm.doc.name
-				}
-				frappe.set_route("List", "Stock Entry");
-			});
+			if(doc.status==="Completed") {
+				frm.add_custom_button(__("Show Stock Entries"), function() {
+					frappe.route_options = {
+						production_order: frm.doc.name
+					}
+					frappe.set_route("List", "Stock Entry");
+				});
+			}
 
 			if (doc.status != 'Stopped' && doc.status != 'Completed') {
 				frm.add_custom_button(__('Stop'), cur_frm.cscript['Stop Production Order'],
@@ -202,13 +204,12 @@ $.extend(cur_frm.cscript, {
 			method:"erpnext.manufacturing.doctype.production_order.production_order.make_time_log",
 			args: {
 				"name": doc.name,
-				"operation": child.operation,
+				"operation": child.idx + ". " + child.operation,
 				"from_time": child.planned_start_time,
 				"to_time": child.planned_end_time,
 				"project": doc.project,
 				"workstation": child.workstation,
-				"qty": flt(doc.qty) - flt(child.completed_qty),
-				"operation_id": child.name
+				"qty": flt(doc.qty) - flt(child.completed_qty)
 			},
 			callback: function(r) {
 				var doclist = frappe.model.sync(r.message);

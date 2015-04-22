@@ -14,6 +14,7 @@ erpnext.selling.SellingController = erpnext.TransactionController.extend({
 	onload: function() {
 		this._super();
 		this.setup_queries();
+		this.toggle_editable_price_list_rate();
 	},
 
 	setup_queries: function() {
@@ -96,7 +97,6 @@ erpnext.selling.SellingController = erpnext.TransactionController.extend({
 			var packing_list_exists = (this.frm.doc.packed_items || []).length;
 			this.frm.toggle_display("packing_list", packing_list_exists ? true : false);
 		}
-		this.toggle_editable_price_list_rate();
 	},
 
 	customer: function() {
@@ -282,8 +282,7 @@ erpnext.selling.SellingController = erpnext.TransactionController.extend({
 	batch_no: function(doc, cdt, cdn) {
 		var me = this;
 		var item = frappe.get_doc(cdt, cdn);
-
-		if(item.warehouse && item.item_code && item.batch_no) {
+		if(item.item_code) {		
 		    return this.frm.call({
 		        method: "erpnext.stock.get_item_details.get_batch_qty",
 		        child: item,

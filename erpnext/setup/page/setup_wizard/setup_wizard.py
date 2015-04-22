@@ -101,14 +101,12 @@ def update_user_name(args):
 	if args.get("email"):
 		args['name'] = args.get("email")
 		frappe.flags.mute_emails = True
-		doc = frappe.get_doc({
+		frappe.get_doc({
 			"doctype":"User",
 			"email": args.get("email"),
 			"first_name": args.get("first_name"),
 			"last_name": args.get("last_name")
-		})
-		doc.flags.no_welcome_mail = True
-		doc.insert()
+		}).insert()
 		frappe.flags.mute_emails = False
 		from frappe.auth import _update_password
 		_update_password(args.get("email"), args.get("password"))
@@ -199,7 +197,7 @@ def set_defaults(args):
 		"float_precision": 3,
 		'date_format': frappe.db.get_value("Country", args.get("country"), "date_format"),
 		'number_format': number_format,
-		'enable_scheduler': 1 if not frappe.flags.in_test else 0
+		'enable_scheduler': 1
 	})
 	system_settings.save()
 
@@ -447,11 +445,12 @@ def login_as_first_user(args):
 @frappe.whitelist()
 def load_messages(language):
 	frappe.clear_cache()
-	set_default_language(language)
+	lang = get_lang_dict()[language]
+	frappe.local.lang = lang
 	m = get_dict("page", "setup-wizard")
 	m.update(get_dict("boot"))
 	send_translations(m)
-	return frappe.local.lang
+	return lang
 
 @frappe.whitelist()
 def load_languages():

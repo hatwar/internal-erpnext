@@ -167,22 +167,19 @@
    "read_only": 0
   }, 
   {
-   "default": "now", 
+   "default": "", 
    "fieldname": "planned_start_date", 
    "fieldtype": "Datetime", 
    "label": "Planned Start Date", 
    "permlevel": 0, 
-   "precision": "", 
-   "reqd": 1
+   "precision": ""
   }, 
   {
    "fieldname": "planned_end_date", 
    "fieldtype": "Datetime", 
    "label": "Planned End Date", 
-   "no_copy": 1, 
    "permlevel": 0, 
-   "precision": "", 
-   "read_only": 1
+   "precision": ""
   }, 
   {
    "fieldname": "column_break_13", 
@@ -357,8 +354,8 @@
  "icon": "icon-cogs", 
  "idx": 1, 
  "in_create": 0, 
- "is_submittable": 1, 
- "modified": "2015-04-13 02:44:17.319988", 
+ "is_submittable": 1,
+ "modified": "2015-03-10 17:02:28.401930", 
  "modified_by": "Administrator", 
  "module": "Manufacturing", 
  "name": "Production Order", 

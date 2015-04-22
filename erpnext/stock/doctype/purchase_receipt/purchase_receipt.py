@@ -126,7 +126,7 @@ class PurchaseReceipt(BuyingController):
 				 if not d.prevdoc_docname:
 					 frappe.throw(_("Purchase Order number required for Item {0}").format(d.item_code))
 
-	def update_stock_ledger(self, allow_negative_stock=False, via_landed_cost_voucher=False):
+	def update_stock_ledger(self, allow_negative_stock=False):
 		sl_entries = []
 		stock_items = self.get_stock_items()
 
@@ -151,8 +151,7 @@ class PurchaseReceipt(BuyingController):
 					}))
 
 		self.bk_flush_supp_wh(sl_entries)
-		self.make_sl_entries(sl_entries, allow_negative_stock=allow_negative_stock,
-			via_landed_cost_voucher=via_landed_cost_voucher)
+		self.make_sl_entries(sl_entries, allow_negative_stock=allow_negative_stock)
 
 	def update_ordered_qty(self):
 		po_map = {}
@@ -199,8 +198,6 @@ class PurchaseReceipt(BuyingController):
 			ins_reqd = ins_reqd and ins_reqd[0]['inspection_required'] or 'No'
 			if ins_reqd == 'Yes' and not d.qa_no:
 				frappe.msgprint(_("Quality Inspection required for Item {0}").format(d.item_code))
-				if self.docstatus==1:
-					raise frappe.ValidationError
 
 	# Check for Stopped status
 	def check_for_stopped_status(self, pc_obj):
@@ -208,7 +205,7 @@ class PurchaseReceipt(BuyingController):
 		for d in self.get('items'):
 			if d.meta.get_field('prevdoc_docname') and d.prevdoc_docname and d.prevdoc_docname not in check_list:
 				check_list.append(d.prevdoc_docname)
-				pc_obj.check_for_stopped_status(d.prevdoc_doctype, d.prevdoc_docname)
+				pc_obj.check_for_stopped_status( d.prevdoc_doctype, d.prevdoc_docname)
 
 	# on submit
 	def on_submit(self):

@@ -64,7 +64,7 @@ def get_chart(chart_name):
 	chart = {}
 	if chart_name == "Standard":
 		from erpnext.accounts.doctype.account.chart_of_accounts.verified import standard_chart_of_accounts
-		return standard_chart_of_accounts.get()
+		return standard_chart_of_accounts.coa
 	else:
 		path = os.path.join(os.path.dirname(__file__), "verified")
 		for fname in os.listdir(path):
@@ -85,12 +85,11 @@ def get_charts_for_country(country):
 				charts.append(content["name"])
 
 	country_code = frappe.db.get_value("Country", country, "code")
-	if country_code:
-		path = os.path.join(os.path.dirname(__file__), "verified")
-		for fname in os.listdir(path):
-			if fname.startswith(country_code) and fname.endswith(".json"):
-				with open(os.path.join(path, fname), "r") as f:
-					_get_chart_name(f.read())
+	path = os.path.join(os.path.dirname(__file__), "verified")
+	for fname in os.listdir(path):
+		if fname.startswith(country_code) and fname.endswith(".json"):
+			with open(os.path.join(path, fname), "r") as f:
+				_get_chart_name(f.read())
 
 	countries_use_OHADA_system = ["Benin", "Burkina Faso", "Cameroon", "Central African Republic", "Comoros",
 		"Congo", "Ivory Coast", "Gabon", "Guinea", "Guinea Bissau", "Equatorial Guinea", "Mali", "Niger",

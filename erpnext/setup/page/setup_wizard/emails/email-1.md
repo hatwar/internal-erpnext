@@ -1,14 +1,15 @@
 Dear {{ fullname }},
 
-Some tips on setting up ERPNext:
+If you aren't a pro, setting me up, is not an easy job. Here are some tips:
 
-1. Try and make dummy cycles: Run your dummy quotes, invoices, payments, deliveries in the system so that you can get familiar with what ERPNext can do for you.
-1. Data Import Tool: You can import bulk data into system using the data import tool: via **Setup > Data > Data Import Tool**.
-1. Add more users via **Setup > Users and Permissions > User**.
-1. If you are done with the testing and want to start fresh, you can delete your company and create a new one.
+1. Try and make dummy cycles: Run your dummy quotes, invoices, payments, deliveries in the system so that you can get familiar with what I can do for you.
+1. Data Import Tool: You can import bulk data into me using the data import tool: via Setup > Data > Data Import Tool
+1. Help me make more friends: Add more users via Setup > Users and Permissions > User
 
-If you need help or are stuck, [head to the user forum](https://discuss.frappe.io) or [read the manual](https://manual.erpnext.com).
+If you need help or are stuck, [head to the user forum](https://discuss.frappe.io) or [read my manual](https://manual.erpnext.com).
 
 Best of luck!
 
-Automatically Sent from your ERPNext Account
+Your ERPNext Account\*
+
+\* This is an automated messaged sent by your ERPNext installation to keep you motivated. You will receive one more such message in another 3 days.

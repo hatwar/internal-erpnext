@@ -4,6 +4,7 @@
 frappe.provide("erpnext.projects");
 
 frappe.ui.form.on("Time Log", "onload", function(frm) {
+	frm.set_query("task", erpnext.queries.task);
 	if (frm.doc.for_manufacturing) {
 		frappe.ui.form.trigger("Time Log", "production_order");
 	}
@@ -40,60 +41,45 @@ frappe.ui.form.on("Time Log", "to_time", function(frm) {
 	if(frm._setting_hours) return;
 	frm.set_value("hours", moment(cur_frm.doc.to_time).diff(moment(cur_frm.doc.from_time),
 		"hours"));
-
 });
 
-var calculate_cost = function(frm) {
-	frm.set_value("costing_amount", frm.doc.costing_rate * frm.doc.hours);
-	if (frm.doc.billable==1){
-		frm.set_value("billing_amount", frm.doc.billing_rate * frm.doc.hours);
-	}
-}
+cur_frm.set_query("production_order", function(doc) {
+	return {
+		"filters": {
+			"docstatus": 1
+		}
+	};
+});
 
-var get_activity_cost = function(frm) {
-	if (frm.doc.employee && frm.doc.activity_type){
+cur_frm.add_fetch('task','project','project');
+
+$.extend(cur_frm.cscript, {
+	production_order: function(doc) {
+		if (doc.production_order){
+			var operations = [];
+			frappe.model.with_doc("Production Order", doc.production_order, function(pro) {
+				doc = frappe.get_doc("Production Order",pro);
+				$.each(doc.operations , function(i, row){
+					operations[i] = row.operation;
+				});
+			frappe.meta.get_docfield("Time Log", "operation", me.frm.doc.name).options = "\n" + operations.join("\n");
+			refresh_field("operation");
+			})
+		}
+	},
+
+	operation: function(doc) {
 		return frappe.call({
-			method: "erpnext.projects.doctype.time_log.time_log.get_activity_cost",
+			method: "erpnext.projects.doctype.time_log.time_log.get_workstation",
 			args: {
-				"employee": frm.doc.employee,
-				"activity_type": frm.doc.activity_type
+				"production_order": doc.production_order,
+				"operation": doc.operation
 			},
 			callback: function(r) {
-				if(!r.exc && r.message) {
-					frm.set_value("costing_rate", r.message.costing_rate);
-					frm.set_value("billing_rate", r.message.billing_rate);
-					calculate_cost(frm);
+				if(!r.exc) {
+					cur_frm.set_value("workstation", r.message)
 				}
 			}
 		});
 	}
-}
-
-frappe.ui.form.on("Time Log", "hours", function(frm) {
-	calculate_cost(frm);
 });
-
-frappe.ui.form.on("Time Log", "activity_type", function(frm) {
-	get_activity_cost(frm);
-});
-
-frappe.ui.form.on("Time Log", "employee", function(frm) {
-	get_activity_cost(frm);
-});
-
-frappe.ui.form.on("Time Log", "billable", function(frm) {
-	if (frm.doc.billable==1) {
-		calculate_cost(frm);
-	}
-	else {
-		frm.set_value("billing_amount", 0);
-	}
-});
-
-cur_frm.fields_dict['task'].get_query = function(doc) {
-	return {
-		filters:{
-			'project': doc.project
-		}
-	}	
-}

@@ -1,0 +1,8 @@
+cur_frm.cscript.onload = function(doc, dt, dn) {
+ from_date_and_to_date_of_appraisal_period(doc,dt,dn)
+}
+ from_date_and_to_date_of_appraisal_period = function(doc, dt, dn) {
+  var fiscal_year=doc.fiscal_year
+  var res = fiscal_year.split("-");
+  set_multiple(dt,dn,{appraisal_period_from:res[0]+"-06-01",appraisal_period_to:res[1]+"-05-31"})
+}

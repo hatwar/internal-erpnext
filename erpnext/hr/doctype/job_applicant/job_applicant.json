@@ -1,5 +1,5 @@
 {
- "autoname": "JA-.######", 
+ "autoname": "", 
  "creation": "2013-01-29 19:25:37", 
  "description": "Applicant for a Job", 
  "docstatus": 0, 
@@ -85,7 +85,5 @@
    "share": 1, 
    "write": 1
   }
- ], 
- "search_fields": "applicant_name", 
- "title_field": "applicant_name"
+ ]
 }

@@ -37,11 +37,14 @@ class LeaveApplication(Document):
 		self.validate_block_days()
 		self.validate_leave_approver()
 
+		#frappe.errprint(self.leave_approver)
+
 	def on_update(self):
 		if (not self.previous_doc and self.leave_approver) or (self.previous_doc and \
 				self.status == "Open" and self.previous_doc.leave_approver != self.leave_approver):
 			# notify leave approver about creation
 			self.notify_leave_approver()
+			self.notify_leave_manager()
 		elif self.previous_doc and \
 				self.previous_doc.status == "Open" and self.status == "Rejected":
 			# notify employee about rejection
@@ -178,6 +181,7 @@ class LeaveApplication(Document):
 		})
 
 	def notify_leave_approver(self):
+	
 		employee = frappe.get_doc("Employee", self.employee)
 
 		def _get_message(url=False):
@@ -185,10 +189,11 @@ class LeaveApplication(Document):
 			employee_name = cstr(employee.employee_name)
 			if url:
 				name = get_url_to_form(self.doctype, self.name)
+				
 				employee_name = get_url_to_form("Employee", self.employee, label=employee_name)
-
+				
 			return (_("New Leave Application") + ": %s - " + _("Employee") + ": %s") % (name, employee_name)
-
+			#frappe.errprint(self.leave_approver)
 		self.notify({
 			# for post in messages
 			"message": _get_message(url=True),
@@ -197,12 +202,44 @@ class LeaveApplication(Document):
 			# for email
 			"subject": _get_message()
 		})
+	
+	def notify_leave_manager(self):
+		employee=frappe.get_doc("Employee",self.employee)
+		ids=[]
+		#frappe.errprint("hiiii")
+		manager_list=frappe.db.sql("select cc from tabCC where parent = '%s'"%(self.employee), as_list=1)
+		#frappe.errprint(manager_list)
+		for email_id in manager_list:
+			ids.append(email_id[0])
+		#frappe.errprint(manager_list)
+		def _get_message(url=False):
+			name=self.name
+			employee_name=cstr(employee.employee_name)
+			if url:
+				name = get_url_to_form(self.doctype, self.name)
+				employee_name = get_url_to_form("Employee", self.employee, label=employee_name)
+
+			return (_("New Leave Application") + ": %s - " + _("Employee") + ": %s") % (name, employee_name)
+
+		if(ids):
+			self.notify({
+				# for post in messages
+				"message": _get_message(url=True),
+				"message_to": ', '.join(ids),
+
+				# for email
+				"subject": _get_message()
+			})
+		
+
 
 	def notify(self, args):
 		args = frappe._dict(args)
-		from frappe.desk.page.messages.messages import post
-		post(**{"txt": args.message, "contact": args.message_to, "subject": args.subject,
-			"notify": cint(self.follow_via_email)})
+		frappe.sendmail(recipients=args.message_to, subject=args.subject,
+			message=args.message)
+		# from frappe.desk.page.messages.messages import post
+		# post(**{"txt": args.message, "contact": args.message_to, "subject": args.subject,
+		# 	"notify": cint(self.follow_via_email)})
 
 def get_holidays(leave_app):
 	tot_hol = frappe.db.sql("""select count(*) from `tabHoliday` h1, `tabHoliday List` h2, `tabEmployee` e1

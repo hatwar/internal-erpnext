@@ -4,7 +4,7 @@
 from __future__ import unicode_literals
 import frappe, json
 
-from frappe.utils import flt, nowdate, get_datetime, getdate, date_diff, cint
+from frappe.utils import flt, nowdate, get_datetime, getdate, date_diff
 from frappe import _
 from frappe.model.document import Document
 from erpnext.manufacturing.doctype.bom.bom import validate_bom_no
@@ -248,7 +248,6 @@ class ProductionOrder(Document):
 		self.planned_end_date = self.operations[-1].planned_end_time
 
 		if time_logs:
-			frappe.local.message_log = []
 			frappe.msgprint(_("Time Logs created:") + "\n" + "\n".join(time_logs))
 
 	def set_operation_start_end_time(self, i, d):
@@ -269,9 +268,9 @@ class ProductionOrder(Document):
 
 	def get_mins_between_operations(self):
 		if not hasattr(self, "_mins_between_operations"):
-			self._mins_between_operations = cint(frappe.db.get_single_value("Manufacturing Settings",
-				"mins_between_operations")) or 10
-		return relativedelta(minutes=self._mins_between_operations)
+			self._mins_between_operations = frappe.db.get_single_value("Manufacturing Settings",
+				"mins_between_operations") or 10
+		return relativedelta(minutes = self._mins_between_operations)
 
 	def check_operation_fits_in_working_hours(self, d):
 		"""Raises expection if operation is longer than working hours in the given workstation."""

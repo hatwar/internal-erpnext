@@ -39,6 +39,21 @@ def get_data():
 				},
 				{
 					"type": "doctype",
+					"name": "Self Appraisal Form",
+					"description": _("self appraisal form record"),
+				},
+				{
+					"type": "doctype",
+					"name": "Performance Appraisal Form",
+					"description": _("Performance Appraisal Form record"),
+				},
+				{
+					"type": "doctype",
+					"name": "Appraisal Rate Scorecard",
+					"description": _("Appraisal rate Scorecard information"),
+				},
+				{
+					"type": "doctype",
 					"name": "Job Applicant",
 					"description": _("Applicant for a Job."),
 				},
@@ -46,11 +61,6 @@ def get_data():
 					"type": "doctype",
 					"name": "Job Opening",
 					"description": _("Opening for a Job."),
-				},
-				{
-					"type": "doctype",
-					"name": "Offer Letter",
-					"description": _("Offer candidate a Job."),
 				},
 			]
 		},
@@ -199,6 +209,12 @@ def get_data():
 					"name": "Monthly Attendance Sheet",
 					"doctype": "Attendance"
 				},
+				{
+					"type":"report",
+					"is_query_report":True,
+					"name":"Salary Slip Report",
+					"doctype":"Salary Slip"
+				}
 			]
 		},
 	]

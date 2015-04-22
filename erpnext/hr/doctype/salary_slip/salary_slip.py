@@ -147,6 +147,27 @@ class SalarySlip(TransactionBase):
 		self.total_in_words = money_in_words(self.rounded_total, company_currency)
 
 		set_employee_name(self)
+		self.set_year_month_name()
+
+	def set_year_month_name(self):
+		"""
+			Set The year from month and fiscal year
+			get fiscal_year start_month and end_month
+		"""
+		import datetime, calendar
+
+		start_dt = frappe.db.get_value('Fiscal Year',self.fiscal_year,'year_start_date')
+		end_dt = frappe.db.get_value('Fiscal Year',self.fiscal_year,'year_end_date')
+		
+		# start_month = start_dt.month
+		# end_month = end_dt.month
+
+		if int(self.month) > int(start_dt.month):
+			self.year = start_dt.year
+		else:
+			self.year = end_dt.year
+
+		self.month_name = calendar.month_name[int(self.month)]
 
 	def calculate_earning_total(self):
 		self.gross_pay = flt(self.arrear_amount) + flt(self.leave_encashment_amount)

@@ -1,6 +1,8 @@
 Dear {{ fullname }},
 
-If you need help in setting up your ERPNext account, here are some resources:
+Hey, how's it going?
+
+If you still need some help, there is a large community out there to help you. Some places you can start:
 
 1. [Ask your questions in the user forum](https://discuss.frappe.io)
 1. [Buy support from the ERPNext Team](https://erpnext.com/pricing)
@@ -9,4 +11,6 @@ If you need help in setting up your ERPNext account, here are some resources:
 
 Thanks!
 
-Automatically sent from your ERPNext Account
+Your ERPNext Account\*
+
+\* That's it from me. Have fun!

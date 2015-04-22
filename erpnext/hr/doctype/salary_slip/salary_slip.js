@@ -6,6 +6,7 @@ cur_frm.add_fetch('employee', 'company', 'company');
 // On load
 // -------------------------------------------------------------------
 cur_frm.cscript.onload = function(doc,dt,dn){
+	console.log(doc);
 	if((cint(doc.__islocal) == 1) && !doc.amended_from){
 		if(!doc.month) {
 			var today=new Date();
@@ -15,7 +16,9 @@ cur_frm.cscript.onload = function(doc,dt,dn){
 		}
 		if(!doc.fiscal_year) doc.fiscal_year = sys_defaults['fiscal_year'];
 		refresh_many(['month', 'fiscal_year']);
+
 	}
+
 }
 
 // Get leave details

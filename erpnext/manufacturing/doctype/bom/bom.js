@@ -8,7 +8,8 @@ cur_frm.cscript.refresh = function(doc,dt,dn){
 	toggle_operations(cur_frm);
 
 	if (!doc.__islocal && doc.docstatus<2) {
-		cur_frm.add_custom_button(__("Update Cost"), cur_frm.cscript.update_cost);
+		cur_frm.add_custom_button(__("Update Cost"), cur_frm.cscript.update_cost,
+			"icon-money", "btn-default");
 	}
 }
 
@@ -16,7 +17,6 @@ cur_frm.cscript.update_cost = function() {
 	return frappe.call({
 		doc: cur_frm.doc,
 		method: "update_cost",
-		freeze: true,
 		callback: function(r) {
 			if(!r.exc) cur_frm.refresh_fields();
 		}

@@ -62,3 +62,31 @@ cur_frm.cscript.validate = function(doc, cdt, cdn) {
 cur_frm.fields_dict.employee.get_query = function(doc,cdt,cdn) {
 	return{ query: "erpnext.controllers.queries.employee_query" }
 }
+cur_frm.cscript.ctc = function(doc, cdt, cdn){
+	console.log(doc);
+  var gross=doc.ctc;
+  var cl=doc.earnings ||[];
+
+  for(var i = 0; i < cl.length; i++){
+      if(cl[i].e_type=='Basic') cl[i].modified_value = gross*0.38;
+      if(cl[i].e_type=='House Rent Allowance') cl[i].modified_value = gross*0.266;
+      if(cl[i].e_type=='Medical Allowance') cl[i].modified_value = gross*0.076;
+      if(cl[i].e_type=='Convayance Allowance') cl[i].modified_value=gross*0.076;
+      if(cl[i].e_type=='Lunch Allowance') cl[i].modified_value=gross*0.06;
+      if(cl[i].e_type=='Others') cl[i].modified_value = gross*0.142;
+  }
+  refresh_field('earnings');
+
+  var cll=doc.deductions ||[];
+
+  // var cll = getchildren('Salary Structure Deduction', doc.name, 'deduction_details', doc.doctype);
+  for(var i = 0; i < cll.length; i++){
+
+      if(cll[i].d_type=='Professional Tax'){
+      	console.log("hiiii");
+        if(gross<15000) cll[i].d_modified_amt =150;
+        else cll[i].d_modified_amt = 200;
+      } 
+  }
+  refresh_field('deductions');
+}

@@ -28,10 +28,6 @@ class Opportunity(TransactionBase):
 	def set_subject(self, subject):
 		self.title = subject
 
-	def after_insert(self):
-		if self.lead:
-			frappe.get_doc("Lead", self.lead).set_status(update=True)
-
 	def validate(self):
 		self._prev = frappe._dict({
 			"contact_date": frappe.db.get_value("Opportunity", self.name, "contact_date") if \
@@ -54,6 +50,15 @@ class Opportunity(TransactionBase):
 
 		from erpnext.accounts.utils import validate_fiscal_year
 		validate_fiscal_year(self.transaction_date, self.fiscal_year, _("Opportunity Date"), self)
+
+	def on_submit(self):
+		if self.lead:
+			frappe.get_doc("Lead", self.lead).set_status(update=True)
+
+	def on_cancel(self):
+		if self.has_quotation():
+			frappe.throw(_("Cannot Cancel Opportunity as Quotation Exists"))
+		self.set_status(update=True)
 
 	def declare_enquiry_lost(self,arg):
 		if not self.has_quotation():
@@ -186,6 +191,9 @@ def make_quotation(source_name, target_doc=None):
 				"enquiry_from": "quotation_to",
 				"enquiry_type": "order_type",
 				"name": "enq_no",
+			},
+			"validation": {
+				"docstatus": ["=", 1]
 			}
 		},
 		"Opportunity Item": {

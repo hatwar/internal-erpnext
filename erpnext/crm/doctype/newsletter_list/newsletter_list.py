@@ -5,7 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from frappe.utils import validate_email_add, strip
+from frappe.utils import validate_email_add
 from frappe import _
 
 class NewsletterList(Document):
@@ -23,12 +23,11 @@ class NewsletterList(Document):
 
 		for user in frappe.db.get_all(doctype, [email_field, unsubscribed_field or "name"]):
 			try:
-				email = strip(user.get(email_field))
-				if email:
+				if user.get(email_field):
 					frappe.get_doc({
 						"doctype": "Newsletter List Subscriber",
 						"newsletter_list": self.name,
-						"email": email,
+						"email": user.get(email_field),
 						"unsubscribed": user.get(unsubscribed_field) if unsubscribed_field else 0
 					}).insert(ignore_permissions=True)
 
@@ -60,10 +59,8 @@ def import_from(name, doctype):
 
 @frappe.whitelist()
 def add_subscribers(name, email_list):
-	if not isinstance(email_list, (list, tuple)):
-		email_list = email_list.replace(",", "\n").split("\n")
 	count = 0
-	for email in email_list:
+	for email in email_list.replace(",", "\n").split("\n"):
 		email = email.strip()
 		validate_email_add(email, True)
 
