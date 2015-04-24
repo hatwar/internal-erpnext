@@ -19,6 +19,21 @@ def get_data():
 				},
 				{
 					"type": "doctype",
+					"name": "Project Health Weekly Report",
+					"description": _("Project Health Weekly Report master."),
+				},
+				{
+					"type": "doctype",
+					"name": "Sprint",
+					"description": _("Sprint master."),
+				},
+				{
+					"type": "doctype",
+					"name": "release Report",
+					"description": _("release Report master."),
+				},
+				{
+					"type": "doctype",
 					"name": "Time Log",
 					"description": _("Time Log for tasks."),
 				},
@@ -34,6 +49,51 @@ def get_data():
 				},
 			]
 		},
+
+		{
+			"label": _("Requirement Tracking"),
+			"icon": "icon-eye-open",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Business Requirement",
+					"description": _("Business Requirement description.")
+				},
+				{
+					"type": "doctype",
+					"name": "Functional Requirement",
+					"description": _("Functional Requirement description.")
+				},
+			]
+		},
+
+		{
+			"label": _("ChangeRequest and Support"),
+			"icon": "icon-resize-small",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Wale",
+					"description": _("Non-Project based.")
+				},
+				{
+					"type": "doctype",
+					"name": "Vesta Si",
+					"description": _("Non-Project based.")
+				},
+				{
+					"type": "doctype",
+					"name": "HealthSnapp",
+					"description": _("Non-Project based.")
+				},
+				{
+					"type": "doctype",
+					"name": "Digitales",
+					"description": _("Non-Project based.")
+				},
+			]
+		},
+		
 		{
 			"label": _("Tools"),
 			"icon": "icon-wrench",
