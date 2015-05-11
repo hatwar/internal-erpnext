@@ -192,7 +192,7 @@
  "idx": 1, 
  "is_submittable": 1, 
  "max_attachments": 3, 
- "modified": "2015-04-22 12:47:14.459663", 
+ "modified": "2015-05-08 11:32:40.849846", 
  "modified_by": "Administrator", 
  "module": "HR", 
  "name": "Leave Application", 
@@ -229,7 +229,7 @@
    "role": "Employee", 
    "set_user_permissions": 1, 
    "share": 1, 
-   "user_permission_doctypes": "[\"Employee\"]", 
+   "user_permission_doctypes": "[\"Employee\",\"Leave Application\"]", 
    "write": 1
   }, 
   {
