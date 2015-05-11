@@ -84,7 +84,7 @@ cur_frm.cscript.ctc = function(doc, cdt, cdn){
 
       if(cll[i].d_type=='Professional Tax'){
       	console.log("hiiii");
-        if(gross<15000) cll[i].d_modified_amt =150;
+        if(gross<15000) cll[i].d_modified_amt =175;
         else cll[i].d_modified_amt = 200;
       } 
   }
